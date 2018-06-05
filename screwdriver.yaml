@@ -1,0 +1,23 @@
+shared:
+    image: node:6
+jobs:
+    A:
+        steps: 
+            - echo: echo test
+        requires: [~commit, ~pr]
+        
+    # B and C will run in parallel
+    B:
+        steps:
+            - echo: echo test
+        requires: [A]
+    C:  
+        steps:
+            - echo: echo test
+        requires: [A]
+    
+    # D is triggered only if B and C both succeed
+    D:
+        steps:
+            - echo: echo test
+        requires: [B,C]
