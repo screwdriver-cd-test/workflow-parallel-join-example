@@ -11,15 +11,20 @@ jobs:
     build-node8:
         image: node:8
         steps: 
-            - echo: echo test
+            - init: npm install
+            - test: npm test
+            - publish: |
+                echo "publishing against node 8"
         requires: [main]
         
     # B and C will run in parallel
     build-node10:
         image: node:8
         steps:
+            - init: npm install
+            - test: npm test
             - publish: |
-                npm run publish
+                echo "publishing against node 10"
         requires: [main]
     delploy:  
         image: ubuntu
