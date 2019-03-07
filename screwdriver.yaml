@@ -1,23 +1,28 @@
 shared:
-    image: node:6
+    environment:
+        NODE_ENV: production
 jobs:
-    A:
+    main:
+        image: node:10
+        requires: [~commit, ~pr]
+        steps:
+            - init: npm install
+            - test: npm test
+    build-node8:
+        image: node:8
         steps: 
             - echo: echo test
-        requires: [~commit, ~pr]
+        requires: [main]
         
     # B and C will run in parallel
-    B:
+    build-node10:
+        image: node:8
         steps:
-            - echo: echo test
-        requires: [A]
-    C:  
+            - publish: |
+                npm run publish
+        requires: [main]
+    delploy:  
+        image: ubuntu
         steps:
-            - echo: echo test
-        requires: [A]
-    
-    # D is triggered only if B and C both succeed
-    D:
-        steps:
-            - echo: echo test
-        requires: [B,C]
+            - verify: echo verify
+        requires: [build-node10, build-node8]
