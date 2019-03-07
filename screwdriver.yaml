@@ -1,6 +1,3 @@
-shared:
-    environment:
-        NODE_ENV: production
 jobs:
     main:
         image: node:10
