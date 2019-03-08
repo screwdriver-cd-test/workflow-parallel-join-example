@@ -1,10 +1,7 @@
 jobs:
     main:
-        image: node:10
+        template: nodejs/test
         requires: [~commit, ~pr]
-        steps:
-            - init: npm install
-            - test: npm test
     build-node8:
         image: node:8
         steps: 
