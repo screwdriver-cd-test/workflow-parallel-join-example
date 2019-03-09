@@ -30,14 +30,14 @@ jobs:
             - deploy-10: "deploying node10 $(meta get publish.node10)"
         requires: [build-node10, build-node8]
     delploy-prod:  
-        image: node10
+        image: node:10
         steps:
             - verify: echo verify
             - deploy-8: "deploying node8 $(meta get publish.node8)"
             - deploy-10: "deploying node10 $(meta get publish.node10)"
         requires: [delploy-stage]
     rollback-prod:
-        image: node10
+        image: node:10
         steps:
             - rollback-8: |
                 echo "rolling back to version $(meta get publish.node8)"
