@@ -23,7 +23,7 @@ jobs:
                 meta set publish.node10 `date +%s`
         requires: [main]
     delploy-stage:  
-        image: node10
+        image: node:10
         steps:
             - verify: echo verify
             - deploy-8: "deploying node8 $(meta get publish.node8)"
