@@ -14,7 +14,7 @@ jobs:
         
     # B and C will run in parallel
     build-node10:
-        image: node:8
+        image: node:10
         steps:
             - init: npm install
             - test: npm test
