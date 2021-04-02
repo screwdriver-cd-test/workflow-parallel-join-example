@@ -12,6 +12,7 @@ jobs:
             - publish: |
                 echo "publishing against node 8"
                 meta set publish.node8 `date +%s`
+                sleep 1
         requires: [main]
         
     # B and C will run in parallel
@@ -23,6 +24,7 @@ jobs:
             - publish: |
                 echo "publishing against node 10"
                 meta set publish.node10 `date +%s`
+                sleep 3
         requires: [main]
     delploy-stage:  
         image: node:10
