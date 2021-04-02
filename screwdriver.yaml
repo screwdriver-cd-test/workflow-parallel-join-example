@@ -40,6 +40,7 @@ jobs:
         requires: [delploy-stage]
     rollback-prod:
         image: node:10
+        requires: [~sd@12:main]
         steps:
             - rollback-8: |
                 echo "rolling back to version $(meta get publish.node8)"
