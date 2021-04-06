@@ -1,3 +1,5 @@
+annotations:
+    screwdriver.cd/chainPR: true
 jobs:
     main:
         requires: [~commit, ~pr]
