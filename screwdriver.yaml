@@ -1,6 +1,26 @@
 annotations:
     screwdriver.cd/chainPR: true
 jobs:
+    main-pr:
+        requires: [~pr]
+        image: node:12
+        steps:
+            - echo: echo
+    build-pr1:
+        requires: [main-pr]
+        image: node:12
+        steps:
+            - echo: echo
+    build-pr2:
+        requires: [main-pr]
+        image: node:12
+        steps:
+            - echo: echo
+    join-pr:
+        requires: [build-pr1, build-pr2]
+        image: node:12
+        steps:
+            - echo: echo    
     main:
         requires: [~commit, ~pr]
         image: node:12
