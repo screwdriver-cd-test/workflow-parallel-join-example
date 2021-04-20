@@ -1,23 +1,77 @@
-shared:
-    image: node:6
+annotations:
+    screwdriver.cd/chainPR: true
 jobs:
-    A:
-        steps: 
-            - echo: echo test
+    main-pr:
+        requires: [~pr]
+        image: node:12
+        steps:
+            - echo: echo
+    build-pr1:
+        requires: [main-pr]
+        image: node:12
+        steps:
+            - echo: echo
+    build-pr2:
+        requires: [main-pr]
+        image: node:12
+        steps:
+            - echo: echo
+    join-pr:
+        requires: [build-pr1, build-pr2]
+        image: node:12
+        steps:
+            - echo: echo    
+    main:
         requires: [~commit, ~pr]
+        image: node:12
+        steps:
+            - echo: echo
+    builder:
+        requires: [main]
+        image: node:12
+        steps:
+            - echo: echo
+    build-node8:
+        image: node:8
+        steps: 
+            - init: npm install
+            - test: npm test
+            - publish: |
+                echo "publishing against node 8"
+                meta set publish.node8 `date +%s`
+                sleep 1
+        requires: [builder]
         
     # B and C will run in parallel
-    B:
+    build-node10:
+        image: node:10
         steps:
-            - echo: echo test
-        requires: [A]
-    C:  
+            - init: npm install
+            - test: npm test
+            - publish: |
+                echo "publishing against node 10"
+                meta set publish.node10 `date +%s`
+                sleep 3
+        requires: [builder]
+    delploy-stage:  
+        image: node:10
         steps:
-            - echo: echo test
-        requires: [A]
-    
-    # D is triggered only if B and C both succeed
-    D:
+            - verify: echo verify
+            - deploy-8: echo "deploying node8 $(meta get publish.node8)"
+            - deploy-10: echo "deploying node10 $(meta get publish.node10)"
+        requires: [build-node10, sd@12:main, sd@15:main]
+    delploy-prod:  
+        image: node:10
         steps:
-            - echo: echo test
-        requires: [B,C]
+            - verify: echo verify
+            - deploy-8: echo "deploying node8 $(meta get publish.node8)"
+            - deploy-10: echo "deploying node10 $(meta get publish.node10)"
+        requires: [delploy-stage]
+    rollback-prod:
+        image: node:10
+        requires: [~sd@12:main-2]
+        steps:
+            - rollback-8: |
+                echo "rolling back to version $(meta get publish.node8)"
+            - rollback-10: |
+                echo "rolling back to version $(meta get publish.node10)"

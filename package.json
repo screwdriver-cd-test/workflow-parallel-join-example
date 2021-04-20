@@ -1,0 +1,22 @@
+{
+  "name": "workflow-parallel-join-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jithin1987/workflow-parallel-join-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jithin1987/workflow-parallel-join-example/issues"
+  },
+  "homepage": "https://github.com/jithin1987/workflow-parallel-join-example#readme",
+  "devDependencies": {
+    "mocha": "^6.0.2"
+  }
+}
